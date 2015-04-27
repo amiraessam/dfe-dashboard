@@ -18,7 +18,7 @@ return [
     //******************************************************************************
     //* ui/ux settings
     //******************************************************************************
-    'default-domain'           => env( 'DFE_DEFAULT_DOMAIN', '.cloud.dreamfactory.com' ),
+    'default-domain'           => env( 'DFE_DEFAULT_DOMAIN', '.enterprise.dreamfactory.com' ),
     'default-domain-protocol'  => 'https',
     'panels'                   => [
         'panels-per-row'    => DashboardDefaults::PANELS_PER_ROW,
@@ -64,7 +64,7 @@ return [
     //******************************************************************************
     //* console api settings
     //******************************************************************************
-    'api-host'                 => 'http://dfe-console.local',
+    'api-host'                 => 'http://console.enterprise.dreamfactory.com',
     'api-endpoint'             => '/api/v1',
     'api-client-id'            => 'acbab38ec7c7f9eeb97ec957b53857050d8b3b7b753b95ffb31e7161140049ea',
     'api-client-secret'        => '97b61eb7ad89bb63b6c575a90ffb86f971a7f0914210f84dcc827cd54fac4f27',

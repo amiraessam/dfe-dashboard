@@ -14,8 +14,8 @@ return [
     'theme'           => 'flatly',
     /** mail template options */
     'mail-template'   => [
-        'web-url'               => 'http://cerberus.fabric.dreamfactory.com/',
-        'public-url'            => 'http://cerberus.fabric.dreamfactory.com/',
+        'web-url'               => 'http://console.enterprise.dreamfactory.com/',
+        'public-url'            => 'http://console.enterprise.dreamfactory.com/',
         'support-email-address' => 'support@dreamfactory.com',
         'confirmation-url'      => 'http://cerberus.fabric.dreamfactory.com/app/confirmation/',
         'smtp-service'          => 'localhost',
