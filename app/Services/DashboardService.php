@@ -1,6 +1,6 @@
 <?php namespace DreamFactory\Enterprise\Dashboard\Services;
 
-use DreamFactory\Enterprise\Common\Enums\AppKeyEntities;
+use DreamFactory\Enterprise\Common\Enums\AppKeyClasses;
 use DreamFactory\Enterprise\Common\Packets\ErrorPacket;
 use DreamFactory\Enterprise\Common\Packets\SuccessPacket;
 use DreamFactory\Enterprise\Common\Services\BaseService;
@@ -73,12 +73,14 @@ class DashboardService extends BaseService
     {
         parent::__construct( $app );
 
-        $this->_defaultDomain = config( 'dashboard.default-domain' );
-        $this->_endpoint = config( 'dashboard.api-host' ) . '/' . trim( config( 'dashboard.api-endpoint' ), ' /' );
-        $this->_apiKey = config( 'dashboard.api-key' );
+        $this->_defaultDomain =
+            '.' . trim( config( 'dashboard.default-dns-zone' ), '.' ) . '.' . trim( config( 'dashboard.default-dns-domain' ), '.' );
+        $this->_endpoint = config( 'dashboard.console-api-url' );
+        $this->_apiKey = config( 'dashboard.console-api-key' );
         $this->_requireCaptcha = config( 'dashboard.require-captcha', true );
         $this->_useConfigServers = config( 'dashboard.override-cluster-servers', false );
         $this->_panelsPerRow = config( 'dashboard.panels-per-row', DashboardDefaults::PANELS_PER_ROW );
+
         $this->_determineGridLayout();
     }
 
@@ -956,15 +958,12 @@ HTML;
     protected function _addTokenToPayload( $payload )
     {
         $_user = \Auth::user();
-
-        $_id = $_user->getAppKey( $_user->id, AppKeyEntities::USER );
-        $_secret = config( 'dashboard.client-secret' );
+        $_key = $_user->getAppKey( $_user->id, AppKeyClasses::USER );
 
         return array_merge(
             array(
-                'user-id'      => \Auth::user()->id,
-                'client-id'    => $_id,
-                'access-token' => hash_hmac( 'sha256', $_id, $_secret )
+                'client-id'    => $_key->client_id,
+                'access-token' => hash_hmac( 'sha256', $_key->client_id, $_key->client_secret )
             ),
             $payload ?: []
         );
@@ -1020,6 +1019,7 @@ HTML;
 
         if ( !$this->_useConfigServers )
         {
+            //  Return an empty array allowing the console to decide where to place the instance
             return $_config;
         }
 
